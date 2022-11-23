@@ -17,13 +17,14 @@ const ListForm = () => {
     const [showTodoFrom,setShowTodoForm] = useState(false);
 
     useEffect(() => {
-        axios.get('https://backendoftodoapp.herokuapp.com/lists/' ).then(function (response){
+        axios.get('/lists' ).then(function (response){
                 setGetList(response.data.lists)
             })
          },[count])
 
     useEffect(()=> {
-        axios.get(`https://backendoftodoapp.herokuapp.com/todo/getTodoById/${listId2}` ).then(function (response){
+        // axios.get(`https://backendoftodoapp.herokuapp.com/todo/getTodoById/${listId2}` ).then(function (response){
+        axios.get(`/todo/getTodoById/${listId2}` ).then(function (response){
             setGetTodoList(response.data.listTodos)
             setBoolForTodo(true)
         })
@@ -33,7 +34,7 @@ const ListForm = () => {
        const payload ={
             name: list,
         }
-        await axios.post('https://backendoftodoapp.herokuapp.com/lists/addlist', payload).then(function (response){
+        await axios.post('/lists/addlist', payload).then(function (response){
             if(response.data.message == 'List added successfully'){
                 setList('');
                 setCount(count + 1)
@@ -50,7 +51,7 @@ const ListForm = () => {
             title: title,
             due_date: datee,
         }
-        await axios.post('https://backendoftodoapp.herokuapp.com/todo/addlisttodo', payload).then(function (response) {
+        await axios.post('/todo/addlisttodo', payload).then(function (response) {
             if (response.data.message == 'Todo added successfully') {
                 setTitle('');
                 setDatee('');
@@ -66,10 +67,11 @@ const ListForm = () => {
             name: list,
             _id: listId
         }
-        await axios.post('https://backendoftodoapp.herokuapp.com/lists/updatelist', payload).then(function (response){
+        await axios.post('/lists/updatelist', payload).then(function (response){
             if(response.data.message == 'List updated successfully'){
                 setList('');
-                setCount(count + 1)
+                setCount(count + 1);
+                setBool(true);
             }
             else{
                 alert('Failed TO Update');
@@ -82,7 +84,7 @@ const ListForm = () => {
             title: title,
             _id: listId
         }
-        await axios.post('https://backendoftodoapp.herokuapp.com/todo/updatelisttodo', payload).then(function (response){
+        await axios.post('/todo/updatelisttodo', payload).then(function (response){
             if(response.data.message == 'Todo updated successfully'){
                 setTitle('');
                 setCount(count + 1)
@@ -95,7 +97,7 @@ const ListForm = () => {
     }
 
     const listDelete = async (id) =>{
-        await axios.get(`https://backendoftodoapp.herokuapp.com/lists/deletelist/${id}`).then(function (response){
+        await axios.get(`/lists/deletelist/${id}`).then(function (response){
             if(response.data.message == 'List deleted successfully'){
                 setCount(count + 1)
                 setShowTodoForm(false)
@@ -106,7 +108,7 @@ const ListForm = () => {
         });
     }
     const todoListDelete = async (id) =>{
-        await axios.get(`https://backendoftodoapp.herokuapp.com/todo/deletelisttodo/${id}`).then(function (response){
+        await axios.get(`/todo/deletelisttodo/${id}`).then(function (response){
             if(response.data.message == 'Todo deleted successfully'){
                 setCount(count + 1)
                 setListId2(response.data.todo.list_id)
@@ -121,7 +123,7 @@ const ListForm = () => {
         const payload ={
             marked: !status,
         }
-        await axios.post(`https://backendoftodoapp.herokuapp.com/todo/updateListTodoStatus/${id}`, payload).then(function (response){
+        await axios.post(`/todo/updateListTodoStatus/${id}`, payload).then(function (response){
             if(response.data.message == 'Todo Status updated successfully'){
                 setTitle('');
                 setDatee('');
